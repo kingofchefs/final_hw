@@ -1,7 +1,3 @@
-#目前缺少的三项功能：
-#任务备注：可以为任务添加备注。
-#分的历史记录显示与统计：查看历史记录时显示任务分类。统计每天做每一类任务分别多⻓时间
-
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
@@ -127,6 +123,7 @@ class TimeManagerApp:
 
         self.start_button.config(state=tk.DISABLED)    
         self.task_name_entry.config(state=tk.DISABLED)  
+        self.task_note_entry.config(state=tk.DISABLED)
         self.end_button.config(state=tk.NORMAL)         
 
     def end_task(self):
@@ -159,6 +156,7 @@ class TimeManagerApp:
         self.task_note=""
         self.start_button.config(state=tk.NORMAL)
         self.task_name_entry.config(state=tk.NORMAL)
+        self.task_note_entry.config(state=tk.NORMAL)
         self.end_button.config(state=tk.DISABLED)
         
         messagebox.showinfo("任务结束",f"任务 '{task_record['task_name']}' 完成！持续时间：{task_record['duration_hours']}小时{task_record['duration_minutes']}分钟{task_record['duration_seconds']}秒")
@@ -175,7 +173,6 @@ class TimeManagerApp:
     def check_pomodoro_reminder(self):
         if self.pomodoro_enabled:
             current_time=time.time()
-            print(f"当前时间: {current_time}, 提醒时间: {self.pomodoro_reminder_time}")
             if current_time>=self.pomodoro_reminder_time:
                 messagebox.showinfo("番茄钟提醒", "时间到了！休息一下吧！")
                 self.pomodoro_start_time=current_time
@@ -266,13 +263,13 @@ class TimeManagerApp:
 
         for date,total_duration in task_duration_by_day.items():
             duration_in_hours_minutes_seconds=change_seconds_into_hours_minutes_seconds(total_duration)
-            stats_text=f"{date:<15} 总时长: {duration_in_hours_minutes_seconds[0]}小时 {duration_in_hours_minutes_seconds[1]}分钟 {duration_in_hours_minutes_seconds[2]}秒"
+            stats_text=f"{date} 总时长: {duration_in_hours_minutes_seconds[0]}小时 {duration_in_hours_minutes_seconds[1]}分钟 {duration_in_hours_minutes_seconds[2]}秒"
             text_widget.insert(tk.END,f"{stats_text}\n")
         
         for date, category_durations in task_category_duration_by_day.items():
             for category, category_duration in category_durations.items():
                 duration_in_hours_minutes_seconds = change_seconds_into_hours_minutes_seconds(category_duration)
-                stats_text=f"{date:<15} {category:<20} 总时长: {duration_in_hours_minutes_seconds[0]}小时 {duration_in_hours_minutes_seconds[1]}分钟 {duration_in_hours_minutes_seconds[2]}秒"
+                stats_text=f"{date} {category} 总时长: {duration_in_hours_minutes_seconds[0]}小时 {duration_in_hours_minutes_seconds[1]}分钟 {duration_in_hours_minutes_seconds[2]}秒"
                 text_widget.insert(tk.END,f"{stats_text}\n")
 
 if __name__ == "__main__":
